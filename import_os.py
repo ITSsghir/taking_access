@@ -3,6 +3,8 @@ import sys
 import subprocess
 from datetime import datetime
 import ctypes
+import socket
+import uuid
 
 def is_admin():
     """Vérifie si le script est exécuté en tant qu'administrateur."""
@@ -28,6 +30,13 @@ def run_as_admin():
     
     return False
 
+def get_ip_mac():
+    """Récupère l'adresse IP et l'adresse MAC de l'ordinateur."""
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
+    return ip_address, mac_address
+
 # Vérifiez si le script est déjà en cours d'exécution avec des privilèges d'administrateur
 if not is_admin():
     print("Le script doit être exécuté avec les privilèges d'administrateur.")
@@ -48,6 +57,7 @@ else:
     # Chemins des fichiers de sauvegarde
     sam_file_path = os.path.join(folder_destination, "sam.save")
     system_file_path = os.path.join(folder_destination, "system.save")
+    ip_mac_file_path = os.path.join(folder_destination, "ip_mac_info.txt")
 
     # Sauvegarder les registres SAM et SYSTEM
     def save_registry_hive(hive, save_path):
@@ -64,4 +74,13 @@ else:
     save_registry_hive("HKLM\\SAM", sam_file_path)
     save_registry_hive("HKLM\\SYSTEM", system_file_path)
 
+    # Récupération de l'adresse IP et de l'adresse MAC
+    ip_address, mac_address = get_ip_mac()
+
+    # Écriture des informations IP et MAC dans un fichier
+    with open(ip_mac_file_path, "w") as f:
+        f.write(f"Adresse IP : {ip_address}\n")
+        f.write(f"Adresse MAC : {mac_address}\n")
+
     print(f"Les fichiers de sauvegarde sont enregistrés dans le dossier : {folder_destination}")
+    print(f"Informations IP et MAC enregistrées dans : {ip_mac_file_path}")
