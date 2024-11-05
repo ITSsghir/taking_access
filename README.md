@@ -1,7 +1,7 @@
 # 🗄️ Script de Sauvegarde des Registres Windows
 
 ## 📋 Description
-Ce projet contient un script Python pour sauvegarder de manière sécurisée des sections critiques du registre Windows (SAM et SYSTEM). Il inclut également un script Batch automatisé qui garantit l’exécution du script Python avec les privilèges nécessaires, rendant le processus de sauvegarde à la fois simple et fiable.
+Ce projet contient un script Python pour sauvegarder de manière sécurisée des sections critiques du registre Windows (SAM et SYSTEM et adress IP et MAC). Il inclut également un script Batch automatisé qui garantit l’exécution du script Python avec les privilèges nécessaires, rendant le processus de sauvegarde à la fois simple et fiable.
 
 ## ✨ Fonctionnalités
 - 🔑 **Gestion des privilèges** : Le script Python requiert des privilèges administratifs pour accéder et sauvegarder les hives de registre SAM et SYSTEM. Le script Batch se charge de relancer le script en mode administrateur si nécessaire.
